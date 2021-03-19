@@ -5,8 +5,11 @@
  */
 package lab8_.kevinrodriguez;
 
+//import Conexiones.Conexion;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -88,10 +91,18 @@ public class inicio extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         modi = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        elimi = new javax.swing.JTextField();
+        eliminar = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         listarr = new javax.swing.JTextArea();
         listar = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JT_TablaHistorial = new javax.swing.JTable();
+        buscartodo = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -439,15 +450,40 @@ public class inicio extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("modificar", jPanel2);
 
+        jLabel23.setText("Ingrese el nombre que desee eliminar:");
+
+        eliminar.setText("eliminar");
+        eliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                eliminarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1018, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(211, 211, 211)
+                .addComponent(jLabel23)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(elimi, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(453, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(eliminar)
+                .addGap(468, 468, 468))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 563, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(107, 107, 107)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(elimi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                .addComponent(eliminar)
+                .addGap(166, 166, 166))
         );
 
         jTabbedPane1.addTab("eliminar", jPanel3);
@@ -488,6 +524,53 @@ public class inicio extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("listar", jPanel4);
+
+        JT_TablaHistorial.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "nombre", "apellido", "edad", "nacionalidad", "lugar", "sexo", "cuenta", "profecion", "lugartrabajo", "facultad", "tipo"
+            }
+        ));
+        jScrollPane1.setViewportView(JT_TablaHistorial);
+
+        buscartodo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        buscartodo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        buscartodo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscartodoKeyPressed(evt);
+            }
+        });
+
+        jLabel26.setFont(new java.awt.Font("Decker", 1, 12)); // NOI18N
+        jLabel26.setText("INGRESE CODIGO");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel26)
+                .addGap(18, 18, 18)
+                .addComponent(buscartodo, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(641, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel26)
+                    .addComponent(buscartodo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+
+        jTabbedPane1.addTab("mostrar", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -577,19 +660,34 @@ public class inicio extends javax.swing.JFrame {
 
         Dba db1 = new Dba("./base1.mdb");
         db1.conectar();
-
+   
         try {
-            db1.query.execute("update personas"
-                + " (nombre,apellido,edad,nacionalidad,lugar,sexo,cuenta,profecion,lugartrabajo,facultad,tipo)"
-                + " set ('" + m + "','" + n + "', '" + o + "','" + r + "','" + q + "','" + s + "','" + t+ "','" + u + "','" + v + "','" + w + "','" + x + "'))" +
-                "where('" + modi.getText() + "',)");
-           // db1.query.execute("update personas set nombre= '" + m + "' , set apellido='" + n + "', set edad='" + o + "', set nacionalidad = '" + r + "' , set lugar='q'sexo='" + s + "', set cuenta='" + t + "', set profecion='" + u + "', set lugartrabajo='" + v + "' , set facultad= '" + w + "' , set tipo= '" + x + "' where nombre= '" + modi.getText() + "')");
+            db1.query.execute("update personas set nombre= '" + m + "' , apellido = '" + n + "'  ,edad='" + o + "' ,nacionalidad = '" + r + "' ,  lugar='" + q + "'  ,sexo='" + s + "', cuenta='" + t + "'  ,profecion='" + u + "'  ,lugartrabajo='" + v + "' , facultad= '" + w + "' ,tipo= '" + x + "'  where nombre= '" + modi.getText() + "' ");
+           JOptionPane.showMessageDialog(null, "Usuario modificado correctamente");
             db1.commit();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         db1.desconectar();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void eliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_eliminarMouseClicked
+        Dba db = new Dba("./base1.mdb");
+        db.conectar();
+        try {
+            db.query.execute("delete from personas where nombre='" + elimi.getText() + "' ");
+            JOptionPane.showMessageDialog(null, "Usuario eliminado correctamente");
+            db.commit();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        db.desconectar();
+
+    }//GEN-LAST:event_eliminarMouseClicked
+
+    private void buscartodoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscartodoKeyPressed
+      
+    }//GEN-LAST:event_buscartodoKeyPressed
 
     /**
      * @param args the command line arguments
@@ -627,10 +725,14 @@ public class inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JTable JT_TablaHistorial;
     private javax.swing.JTextField apellido;
     private javax.swing.JTextField apellido1;
+    private javax.swing.JTextField buscartodo;
     private javax.swing.JFormattedTextField edad;
     private javax.swing.JFormattedTextField edad1;
+    private javax.swing.JTextField elimi;
+    private javax.swing.JButton eliminar;
     private javax.swing.JTextField facultad;
     private javax.swing.JTextField facultad1;
     private javax.swing.JButton jButton1;
@@ -650,7 +752,9 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -662,6 +766,8 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton listar;
@@ -687,5 +793,7 @@ public class inicio extends javax.swing.JFrame {
     private javax.swing.JLabel xd;
     // End of variables declaration//GEN-END:variables
 
-      
+    Statement st = null;
+ResultSet rs = null;
+Connection con2 = null;  
 }
