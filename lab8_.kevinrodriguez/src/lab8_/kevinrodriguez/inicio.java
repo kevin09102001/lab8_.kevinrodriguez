@@ -7,6 +7,7 @@ package lab8_.kevinrodriguez;
 
 //import Conexiones.Conexion;
 import java.sql.Connection;
+import Conexiones.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -686,7 +687,36 @@ public class inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_eliminarMouseClicked
 
     private void buscartodoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscartodoKeyPressed
-      
+        String[] titulos = {"nombre","apellido","edad","nacionalidad","lugar","sexo","cuenta","profecion","lugartrabajo","facultad","tipo"};
+        String[] registros = new String[100];
+        String sql = "SELECT * FROM personas WHERE cuenta " + buscartodo.getText() ;
+        DefaultTableModel model = new DefaultTableModel(null, titulos);
+        Conexion conect1 = new Conexion();
+        con2 = conect1.getConnection();
+        try
+        {
+            st = (Statement) con2.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next())
+            {
+                registros[0] = rs.getString("nombre");
+                registros[1] = rs.getString("apellido");
+                registros[2] = rs.getString("edad");
+                registros[3] = rs.getString("nacionalidad");
+                registros[4] = rs.getString("lugar");
+                registros[5] = rs.getString("sexo");
+                registros[6] = rs.getString("cuenta");
+                registros[7] = rs.getString("profecion");
+                registros[8] = rs.getString("lugartrabajo");
+                registros[9] = rs.getString("facultad");
+                registros[10] = rs.getString("tipo");;
+                model.addRow(registros);
+            }
+            JT_TablaHistorial.setModel(model);
+        } catch (SQLException ex)
+        {
+            System.out.println("ERROR AL BUSCAR LOS DATOS : " + ex.getMessage());
+        }
     }//GEN-LAST:event_buscartodoKeyPressed
 
     /**

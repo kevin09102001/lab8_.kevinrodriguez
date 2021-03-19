@@ -25,7 +25,7 @@ public class Dba {
 
     public void conectar() {
         try {
-            //String ruta=new File (".").getCanonicalPath()+"\\src\\lab8_\\"+"personas.mdb";
+           
             String driver = "jdbc:ucanaccess://";
             dbcon = DriverManager.getConnection(driver + base_datos, "", "");
             query = dbcon.createStatement();
